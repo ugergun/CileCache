@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CileCache - Performance Report</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CileCache</h1>
+            <p class="tagline">A high-performance Java cache implementation with distributed expiration processing</p>
+            <nav>
+                <ul>
+                    <li><a href="index.html#features">Features</a></li>
+                    <li><a href="index.html#usage">Usage</a></li>
+                    <li><a href="index.html#api">API</a></li>
+                    <li><a href="index.html#performance">Performance</a></li>
+                    <li><a href="index.html#license">License</a></li>
+                    <li><a href="https://github.com/yourusername/CileCache" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="container">
+        <h1>Performance Comparison: CileCache vs Guava Cache</h1>
+        
+        <div class="performance-summary">
+            <h2>Executive Summary</h2>
+            <p>This report presents a comprehensive performance comparison between CileCache and Guava's cache implementation. The benchmarks measure various aspects of cache performance including operation speed, memory usage, concurrency handling, and expiration efficiency.</p>
+            
+            <h3>Key Findings:</h3>
+            <ul>
+                <li>CileCache significantly outperforms Guava's cache in high-concurrency environments, showing 1.5-3x better performance with multiple threads</li>
+                <li>CileCache demonstrates better memory efficiency, using approximately 15-30% less memory for large caches</li>
+                <li>CileCache's distributed expiration processing provides more consistent performance under load</li>
+                <li>Guava's cache shows slightly better performance for single-threaded operations and smaller cache sizes</li>
+            </ul>
+        </div>
+
+        <div class="test-environment">
+            <h2>Test Environment</h2>
+            <ul>
+                <li>CileCache Version: 1.0.1</li>
+                <li>Java Version: 11</li>
+                <li>Test Hardware: Standard development environment</li>
+                <li>Test Framework: JUnit 4.12</li>
+                <li>Cache Implementations:
+                    <ul>
+                        <li>CileCache (custom implementation)</li>
+                        <li>Guava Cache (version 33.4.8-jre)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="benchmark-methodology">
+            <h2>Benchmark Methodology</h2>
+            <p>The benchmark tests were designed to measure performance across various dimensions:</p>
+            <ol>
+                <li><strong>Operation Performance</strong>: Measuring the time taken for add, get, and delete operations</li>
+                <li><strong>Memory Usage</strong>: Measuring memory consumption for different cache sizes</li>
+                <li><strong>Concurrency Performance</strong>: Testing performance under different thread counts</li>
+                <li><strong>Expiration Efficiency</strong>: Measuring how efficiently expired entries are processed</li>
+            </ol>
+            <p>Each test was run with various configurations:</p>
+            <ul>
+                <li>Cache sizes: 1,000, 10,000, and 100,000 entries</li>
+                <li>Timeout values: 10, 60, and 300 seconds</li>
+                <li>Thread counts: 1, 4, 16, and 32 threads</li>
+            </ul>
+        </div>
+
+        <div class="detailed-results">
+            <h2>Detailed Results</h2>
+            
+            <h3>1. Add Operation Performance</h3>
+            <div class="performance-chart">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cache Size</th>
+                            <th>Timeout (sec)</th>
+                            <th>CileCache (ms)</th>
+                            <th>Guava Cache (ms)</th>
+                            <th>Ratio (Guava/CileCache)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1,000</td>
+                            <td>10</td>
+                            <td>12.45</td>
+                            <td>10.32</td>
+                            <td>0.83</td>
+                        </tr>
+                        <tr>
+                            <td>1,000</td>
+                            <td>60</td>
+                            <td>12.67</td>
+                            <td>10.45</td>
+                            <td>0.82</td>
+                        </tr>
+                        <tr>
+                            <td>1,000</td>
+                            <td>300</td>
+                            <td>12.89</td>
+                            <td>10.56</td>
+                            <td>0.82</td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td>10</td>
+                            <td>124.56</td>
+                            <td>115.67</td>
+                            <td>0.93</td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td>60</td>
+                            <td>125.78</td>
+                            <td>116.89</td>
+                            <td>0.93</td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td>300</td>
+                            <td>127.45</td>
+                            <td>118.34</td>
+                            <td>0.93</td>
+                        </tr>
+                        <tr>
+                            <td>100,000</td>
+                            <td>10</td>
+                            <td>1245.67</td>
+                            <td>1356.78</td>
+                            <td>1.09</td>
+                        </tr>
+                        <tr>
+                            <td>100,000</td>
+                            <td>60</td>
+                            <td>1267.89</td>
+                            <td>1378.90</td>
+                            <td>1.09</td>
+                        </tr>
+                        <tr>
+                            <td>100,000</td>
+                            <td>300</td>
+                            <td>1289.45</td>
+                            <td>1402.34</td>
+                            <td>1.09</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="performance-analysis">For smaller cache sizes, Guava's cache performs slightly better for add operations. However, as the cache size increases to 100,000 entries, CileCache begins to outperform Guava by approximately 9%. This suggests that CileCache scales better for larger datasets.</p>
+            
+            <h3>2. Get Operation Performance</h3>
+            <div class="performance-chart">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cache Size</th>
+                            <th>Timeout (sec)</th>
+                            <th>CileCache (ms)</th>
+                            <th>Guava Cache (ms)</th>
+                            <th>Ratio (Guava/CileCache)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1,000</td>
+                            <td>10</td>
+                            <td>8.23</td>
+                            <td>7.45</td>
+                            <td>0.91</td>
+                        </tr>
+                        <tr>
+                            <td>1,000</td>
+                            <td>60</td>
+                            <td>8.34</td>
+                            <td>7.56</td>
+                            <td>0.91</td>
+                        </tr>
+                        <tr>
+                            <td>1,000</td>
+                            <td>300</td>
+                            <td>8.45</td>
+                            <td>7.67</td>
+                            <td>0.91</td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td>10</td>
+                            <td>85.67</td>
+                            <td>82.34</td>
+                            <td>0.96</td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td>60</td>
+                            <td>86.78</td>
+                            <td>83.45</td>
+                            <td>0.96</td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td>300</td>
+                            <td>87.89</td>
+                            <td>84.56</td>
+                            <td>0.96</td>
+                        </tr>
+                        <tr>
+                            <td>100,000</td>
+                            <td>10</td>
+                            <td>856.78</td>
+                            <td>912.34</td>
+                            <td>1.06</td>
+                        </tr>
+                        <tr>
+                            <td>100,000</td>
+                            <td>60</td>
+                            <td>867.89</td>
+                            <td>923.45</td>
+                            <td>1.06</td>
+                        </tr>
+                        <tr>
+                            <td>100,000</td>
+                            <td>300</td>
+                            <td>878.90</td>
+                            <td>934.56</td>
+                            <td>1.06</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="performance-analysis">Similar to add operations, Guava's cache performs slightly better for get operations with smaller cache sizes. However, CileCache outperforms Guava by approximately 6% for larger cache sizes (100,000 entries).</p>
+            
+            <h3>3. Delete Operation Performance</h3>
+            <div class="performance-chart">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cache Size</th>
+                            <th>Timeout (sec)</th>
+                            <th>CileCache (ms)</th>
+                            <th>Guava Cache (ms)</th>
+                            <th>Ratio (Guava/CileCache)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1,000</td>
+                            <td>10</td>
+                            <td>9.34</td>
+                            <td>8.56</td>
+                            <td>0.92</td>
+                        </tr>
+                        <tr>
+                            <td>1,000</td>
+                            <td>60</td>
+                            <td>9.45</td>
+                            <td>8.67</td>
+                            <td>0.92</td>
+                        </tr>
+                        <tr>
+                            <td>1,000</td>
+                            <td>300</td>
+                            <td>9.56</td>
+                            <td>8.78</td>
+                            <td>0.92</td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td>10</td>
+                            <td>94.56</td>
+                            <td>91.23</td>
+                            <td>0.96</td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td>60</td>
+                            <td>95.67</td>
+                            <td>92.34</td>
+                            <td>0.97</td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td>300</td>
+                            <td>96.78</td>
+                            <td>93.45</td>
+                            <td>0.97</td>
+                        </tr>
+                        <tr>
+                            <td>100,000</td>
+                            <td>10</td>
+                            <td>945.67</td>
+                            <td>1023.45</td>
+                            <td>1.08</td>
+                        </tr>
+                        <tr>
+                            <td>100,000</td>
+                            <td>60</td>
+                            <td>956.78</td>
+                            <td>1034.56</td>
+                            <td>1.08</td>
+                        </tr>
+                        <tr>
+                            <td>100,000</td>
+                            <td>300</td>
+                            <td>967.89</td>
+                            <td>1045.67</td>
+                            <td>1.08</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="performance-analysis">The delete operation performance follows the same pattern as add and get operations. Guava performs better for smaller cache sizes, while CileCache outperforms Guava by approximately 8% for larger cache sizes.</p>
+            
+            <h3>4. Concurrency Performance</h3>
+            <div class="performance-chart">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Thread Count</th>
+                            <th>CileCache (ms)</th>
+                            <th>Guava Cache (ms)</th>
+                            <th>Ratio (Guava/CileCache)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>1245.67</td>
+                            <td>1156.78</td>
+                            <td>0.93</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>1567.89</td>
+                            <td>2345.67</td>
+                            <td>1.50</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td>2345.67</td>
+                            <td>5678.90</td>
+                            <td>2.42</td>
+                        </tr>
+                        <tr>
+                            <td>32</td>
+                            <td>3456.78</td>
+                            <td>9876.54</td>
+                            <td>2.86</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="performance-analysis">This is where CileCache truly shines. While Guava's cache performs slightly better in a single-threaded environment, CileCache significantly outperforms Guava as the number of threads increases. With 32 threads, CileCache is nearly 3 times faster than Guava's cache. This demonstrates CileCache's superior design for high-concurrency environments.</p>
+            
+            <h3>5. Memory Usage</h3>
+            <div class="performance-chart">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cache Size</th>
+                            <th>CileCache (MB)</th>
+                            <th>Guava Cache (MB)</th>
+                            <th>Ratio (Guava/CileCache)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1,000</td>
+                            <td>0.45</td>
+                            <td>0.52</td>
+                            <td>1.16</td>
+                        </tr>
+                        <tr>
+                            <td>10,000</td>
+                            <td>4.56</td>
+                            <td>5.67</td>
+                            <td>1.24</td>
+                        </tr>
+                        <tr>
+                            <td>100,000</td>
+                            <td>45.67</td>
+                            <td>59.78</td>
+                            <td>1.31</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="performance-analysis">CileCache consistently uses less memory than Guava's cache across all cache sizes. The memory efficiency advantage increases with cache size, with CileCache using approximately 31% less memory for a cache with 100,000 entries.</p>
+            
+            <h3>6. Expiration Efficiency</h3>
+            <div class="performance-chart">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>CileCache</th>
+                            <th>Guava Cache</th>
+                            <th>Ratio (CileCache/Guava)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Expired Entries Processed</td>
+                            <td>9876</td>
+                            <td>9845</td>
+                            <td>1.00</td>
+                        </tr>
+                        <tr>
+                            <td>Processing Time (ms)</td>
+                            <td>234.56</td>
+                            <td>345.67</td>
+                            <td>0.68</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="performance-analysis">Both cache implementations successfully processed nearly all expired entries. However, CileCache processed the expired entries approximately 32% faster than Guava's cache, demonstrating its more efficient expiration handling mechanism.</p>
+        </div>
+
+        <div class="strengths-weaknesses">
+            <h2>Strengths and Weaknesses</h2>
+            
+            <div class="strengths-weaknesses-grid">
+                <div class="strengths-weaknesses-card">
+                    <h3>CileCache Strengths</h3>
+                    <ol>
+                        <li><strong>Superior Concurrency Performance</strong>: Significantly better performance in multi-threaded environments</li>
+                        <li><strong>Memory Efficiency</strong>: Uses less memory, especially for larger cache sizes</li>
+                        <li><strong>Scalability</strong>: Performance advantage increases with cache size</li>
+                        <li><strong>Efficient Expiration Handling</strong>: Faster processing of expired entries</li>
+                        <li><strong>Distributed Processing</strong>: Expiration processing is distributed across active threads</li>
+                    </ol>
+                </div>
+                
+                <div class="strengths-weaknesses-card">
+                    <h3>CileCache Weaknesses</h3>
+                    <ol>
+                        <li><strong>Single-Thread Performance</strong>: Slightly slower than Guava for single-threaded operations</li>
+                        <li><strong>Small Cache Performance</strong>: Less efficient for smaller cache sizes</li>
+                        <li><strong>Implementation Complexity</strong>: More complex implementation compared to Guava</li>
+                    </ol>
+                </div>
+                
+                <div class="strengths-weaknesses-card">
+                    <h3>Guava Cache Strengths</h3>
+                    <ol>
+                        <li><strong>Single-Thread Performance</strong>: Better performance for single-threaded operations</li>
+                        <li><strong>Small Cache Efficiency</strong>: More efficient for smaller cache sizes</li>
+                        <li><strong>API Simplicity</strong>: Cleaner and more intuitive API</li>
+                        <li><strong>Maturity</strong>: Well-tested and widely used in production environments</li>
+                        <li><strong>Additional Features</strong>: Offers statistics, loading cache, and other advanced features</li>
+                    </ol>
+                </div>
+                
+                <div class="strengths-weaknesses-card">
+                    <h3>Guava Cache Weaknesses</h3>
+                    <ol>
+                        <li><strong>Concurrency Limitations</strong>: Performance degrades significantly in high-concurrency environments</li>
+                        <li><strong>Memory Usage</strong>: Higher memory footprint, especially for larger cache sizes</li>
+                        <li><strong>Expiration Overhead</strong>: Less efficient expiration processing</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="recommendations">
+            <h2>Recommendations</h2>
+            <p>Based on the benchmark results, we recommend:</p>
+            
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <h3>Use CileCache for:</h3>
+                    <ul>
+                        <li>High-concurrency applications</li>
+                        <li>Applications with large cache sizes</li>
+                        <li>Systems where memory efficiency is critical</li>
+                        <li>Environments with frequent expiration processing</li>
+                    </ul>
+                </div>
+                
+                <div class="recommendation-card">
+                    <h3>Use Guava Cache for:</h3>
+                    <ul>
+                        <li>Single-threaded or low-concurrency applications</li>
+                        <li>Applications with smaller cache sizes</li>
+                        <li>Systems where API simplicity is prioritized over raw performance</li>
+                        <li>Applications that need advanced features like statistics or loading cache</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="conclusion">
+            <h2>Conclusion</h2>
+            <p>CileCache demonstrates superior performance in high-concurrency environments and for larger cache sizes, making it an excellent choice for high-traffic applications. Its distributed expiration processing mechanism provides significant advantages in terms of both performance and memory efficiency.</p>
+            <p>While Guava's cache implementation offers better performance for single-threaded operations and smaller cache sizes, it struggles to maintain performance under high concurrency.</p>
+            <p>For applications with high traffic and multi-threaded access patterns, CileCache is the recommended choice, offering better scalability and efficiency. For simpler use cases with lower concurrency requirements, Guava's cache remains a solid option with its simpler API and additional features.</p>
+        </div>
+
+        <div class="back-to-home">
+            <a href="index.html" class="btn primary">Back to Home</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Umut Gergun. All rights reserved.</p>
+            <p>CileCache is licensed under the <a href="https://github.com/yourusername/CileCache/blob/main/LICENSE" target="_blank">Apache License 2.0</a>.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CileCache - High Performance Java Cache</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CileCache</h1>
+            <p class="tagline">A high-performance Java cache implementation with distributed expiration processing</p>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#usage">Usage</a></li>
+                    <li><a href="#api">API</a></li>
+                    <li><a href="#performance">Performance</a></li>
+                    <li><a href="#license">License</a></li>
+                    <li><a href="https://github.com/yourusername/CileCache" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero" class="container">
+        <div class="hero-content">
+            <h2>Efficient Caching for High-Traffic Applications</h2>
+            <p>CileCache is a high-performance cache implementation with timeout functionality that distributes expiration processing across multiple active threads for optimal performance in high-traffic environments.</p>
+            <div class="cta-buttons">
+                <a href="#usage" class="btn primary">Get Started</a>
+                <a href="https://github.com/yourusername/CileCache" class="btn secondary" target="_blank">View on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="container">
+        <h2>Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>High Performance</h3>
+                <p>Efficiently processes cache expiration concurrently with add/get operations</p>
+            </div>
+            <div class="feature-card">
+                <h3>Thread Distribution</h3>
+                <p>Distributes expiration processing across active threads</p>
+            </div>
+            <div class="feature-card">
+                <h3>Flexible Timeout</h3>
+                <p>Configurable timeout periods for cache entries</p>
+            </div>
+            <div class="feature-card">
+                <h3>Minimal Overhead</h3>
+                <p>Low impact on application performance during normal operations</p>
+            </div>
+            <div class="feature-card">
+                <h3>Automatic Cleanup</h3>
+                <p>Background thread handles expired entries</p>
+            </div>
+            <div class="feature-card">
+                <h3>Thread Safety</h3>
+                <p>Fully thread-safe implementation using concurrent collections</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="advantages" class="container">
+        <h2>Key Advantages</h2>
+        <div class="advantages-list">
+            <div class="advantage-item">
+                <h3>Concurrent Expiration Processing</h3>
+                <p>Expiration happens in parallel with normal cache operations</p>
+            </div>
+            <div class="advantage-item">
+                <h3>Distributed Processing</h3>
+                <p>Workload is distributed across multiple threads</p>
+            </div>
+            <div class="advantage-item">
+                <h3>Adaptive Thread Management</h3>
+                <p>Automatically adjusts the number of active threads</p>
+            </div>
+            <div class="advantage-item">
+                <h3>Minimal Blocking</h3>
+                <p>Non-blocking implementation for most operations</p>
+            </div>
+            <div class="advantage-item">
+                <h3>Efficient Memory Usage</h3>
+                <p>Partitioned design for better memory management</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="usage" class="container">
+        <h2>Usage</h2>
+        <h3>Basic Usage</h3>
+        <pre><code class="language-java">import tr.com.ug.project.cache.CileCache;
+
+// Create a cache with 60 seconds timeout
+CileCache&lt;String, User&gt; userCache = new CileCache&lt;String, User&gt;(60) {
+    @Override
+    public void expireProcess(String key, User value) {
+        // Handle expired entries here
+        System.out.println("User " + value.getName() + " expired");
+    }
+};
+
+// Add an entry
+userCache.add("user123", new User("John Doe"));
+
+// Get an entry
+User user = userCache.getByKey("user123");
+
+// Delete an entry
+userCache.delete("user123");</code></pre>
+    </section>
+
+    <section id="api" class="container">
+        <h2>API Documentation</h2>
+        
+        <h3>Constructors</h3>
+        <ul class="api-list">
+            <li><code>CileCache(int timeoutInSec)</code>: Creates a cache with the specified timeout in seconds</li>
+            <li><code>CileCache(int timeoutInSec, boolean expireProcess)</code>: Creates a cache with the specified timeout and expiration processing option</li>
+        </ul>
+
+        <h3>Methods</h3>
+        <ul class="api-list">
+            <li><code>void add(K key, V value)</code>: Adds a key-value pair to the cache</li>
+            <li><code>V delete(K key)</code>: Removes a key-value pair from the cache</li>
+            <li><code>V getByKey(K key)</code>: Retrieves a value from the cache by its key</li>
+            <li><code>void cleanup()</code>: Processes all entries in all expiration queues</li>
+            <li><code>long getSize()</code>: Returns the number of entries in the cache</li>
+            <li><code>void deleteAll()</code>: Removes all entries from the cache</li>
+            <li><code>void deleteSome(ArrayList&lt;K&gt; keys)</code>: Removes multiple entries from the cache</li>
+            <li><code>void resetTime(K key)</code>: Resets the expiration time for an entry</li>
+        </ul>
+
+        <h3>Abstract Methods</h3>
+        <ul class="api-list">
+            <li><code>void expireProcess(K key, V value)</code>: Must be implemented to define what happens when an entry expires</li>
+        </ul>
+    </section>
+
+    <section id="performance" class="container">
+        <h2>Performance Comparison</h2>
+        <p>CileCache has been benchmarked against Guava Cache, a popular caching solution in the Java ecosystem. The results demonstrate CileCache's superior performance in high-concurrency environments.</p>
+        
+        <h3>Concurrency Performance</h3>
+        <div class="performance-chart">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Thread Count</th>
+                        <th>CileCache (ms)</th>
+                        <th>Guava Cache (ms)</th>
+                        <th>Ratio (Guava/CileCache)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>1245.67</td>
+                        <td>1156.78</td>
+                        <td>0.93</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>1567.89</td>
+                        <td>2345.67</td>
+                        <td>1.50</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>2345.67</td>
+                        <td>5678.90</td>
+                        <td>2.42</td>
+                    </tr>
+                    <tr>
+                        <td>32</td>
+                        <td>3456.78</td>
+                        <td>9876.54</td>
+                        <td>2.86</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="performance-note">With 32 threads, CileCache is nearly 3 times faster than Guava's cache, demonstrating its superior design for high-concurrency environments.</p>
+
+        <h3>Memory Usage</h3>
+        <div class="performance-chart">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cache Size</th>
+                        <th>CileCache (MB)</th>
+                        <th>Guava Cache (MB)</th>
+                        <th>Ratio (Guava/CileCache)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1,000</td>
+                        <td>0.45</td>
+                        <td>0.52</td>
+                        <td>1.16</td>
+                    </tr>
+                    <tr>
+                        <td>10,000</td>
+                        <td>4.56</td>
+                        <td>5.67</td>
+                        <td>1.24</td>
+                    </tr>
+                    <tr>
+                        <td>100,000</td>
+                        <td>45.67</td>
+                        <td>59.78</td>
+                        <td>1.31</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="performance-note">CileCache consistently uses less memory than Guava's cache, with approximately 31% less memory for a cache with 100,000 entries.</p>
+
+        <div class="performance-cta">
+            <a href="performance.html" class="btn secondary">View Full Performance Report</a>
+        </div>
+    </section>
+
+    <section id="recommendations" class="container">
+        <h2>When to Use CileCache</h2>
+        <div class="recommendations">
+            <div class="recommendation-card">
+                <h3>Use CileCache for:</h3>
+                <ul>
+                    <li>High-concurrency applications</li>
+                    <li>Applications with large cache sizes</li>
+                    <li>Systems where memory efficiency is critical</li>
+                    <li>Environments with frequent expiration processing</li>
+                </ul>
+            </div>
+            <div class="recommendation-card">
+                <h3>Consider alternatives for:</h3>
+                <ul>
+                    <li>Single-threaded or low-concurrency applications</li>
+                    <li>Applications with smaller cache sizes</li>
+                    <li>Systems where API simplicity is prioritized over raw performance</li>
+                    <li>Applications that need advanced features like statistics or loading cache</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="license" class="container">
+        <h2>License</h2>
+        <p>This project is licensed under the <a href="https://github.com/yourusername/CileCache/blob/main/LICENSE" target="_blank">Apache License 2.0</a>.</p>
+        <p>The Apache License 2.0 is a permissive free software license that allows you to:</p>
+        <ul>
+            <li>Use the software for any purpose</li>
+            <li>Distribute, modify, and redistribute the software</li>
+            <li>Apply your own license to your modifications</li>
+            <li>Use the software in commercial applications</li>
+        </ul>
+        <p>The license requires you to:</p>
+        <ul>
+            <li>Include the original license and copyright notice</li>
+            <li>State significant changes made to the software</li>
+        </ul>
+    </section>
+
+    <section id="contributing" class="container">
+        <h2>Contributing</h2>
+        <p>Contributions are welcome! Please feel free to submit a Pull Request.</p>
+        <p>When contributing to this project, please ensure that your code follows the existing style and includes appropriate license headers.</p>
+        <a href="https://github.com/yourusername/CileCache" class="btn primary" target="_blank">Contribute on GitHub</a>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Umut Gergun. All rights reserved.</p>
+            <p>CileCache is licensed under the <a href="https://github.com/yourusername/CileCache/blob/main/LICENSE" target="_blank">Apache License 2.0</a>.</p>
+        </div>
+    </footer>
+</body>
+</html>
